@@ -23,7 +23,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/lib/supabaseClient';
 import axios from 'axios';
 import countries from '@/data/countries.json';
-import { Phone } from 'lucide-react'; // Added import for Phone icon
+import { Phone } from 'lucide-react';
 
 // PhoneInput component for reusability
 interface PhoneInputProps {
@@ -323,35 +323,38 @@ export default function VoiceAISaaSForm() {
     }
   };
 
-  // Handle button clicks with direct state updates
-  const handleOpenCustomForm = () => {
-    setShowCustomForm(true);
-  };
-  
-  const handleOpenDemoForm = () => {
-    setShowDemoForm(true);
-  };
-
   return (
-    // Fixed height container to maintain consistent layout regardless of content changes
-    <div className="flex flex-col items-center justify-center h-24 md:h-28">
-      <div className="flex flex-col md:flex-row gap-4">
-        <Button
-          onClick={handleOpenDemoForm}
-          variant="outline"
-          className="border-2 border-primary text-lg md:text-xl font-semibold whitespace-nowrap flex items-center gap-2"
-        >
-          <Phone size={20} className="text-primary fill-primary" />
-          <span className="text-primary">Talk to Our Voice AI</span>
-        </Button>
-        <Button
-          onClick={handleOpenCustomForm}
-          className="text-lg md:text-xl font-semibold whitespace-nowrap"
-        >
-          Get your custom voice AI solutions
-        </Button>
-      </div>
-
+    <>
+      <Button
+        size="lg"
+        className="px-8 py-6 text-lg hover:scale-105 transition-transform"
+        onClick={() => setShowCustomForm(true)}
+      >
+        Start 14-Day Free Trial
+      </Button>
+      
+      <Button
+  size="lg"
+  variant="outline"
+  className="px-8 py-6 text-lg hover:scale-105 transition-transform border-primary"
+  onClick={() => setShowDemoForm(true)}
+>
+  <svg 
+    xmlns="http://www.w3.org/2000/svg" 
+    width="18" 
+    height="18" 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    stroke="currentColor" 
+    strokeWidth="2" 
+    strokeLinecap="round" 
+    strokeLinejoin="round" 
+    className="mr-2 text-primary fill-primary"
+  >
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+  </svg>
+  <span className="text-primary">Talk to Our Voice AI Agents</span>
+</Button>
       {/* Custom Voice AI Form */}
       <Dialog
         open={showCustomForm}
@@ -513,6 +516,6 @@ export default function VoiceAISaaSForm() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }

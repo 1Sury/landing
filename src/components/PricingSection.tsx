@@ -48,6 +48,93 @@ const PricingSection: React.FC = () => {
     };
   }, []);
 
+  // Add smooth scrolling for anchor links
+  useEffect(() => {
+    // Handle all anchor clicks for smooth scrolling
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest('a');
+      
+      if (anchor) {
+        const href = anchor.getAttribute('href');
+        
+        // Only process if we have an href and it starts with '#'
+        if (!href || !href.startsWith('#')) {
+          return;
+        }
+        
+        // Skip if it's just "#" with no ID
+        if (href === '#') {
+          return;
+        }
+        
+        // Get the ID without the '#' prefix
+        const targetId = href.substring(1);
+        
+        // If there's no ID after the #, don't proceed
+        if (!targetId) {
+          return;
+        }
+        
+        // Find the element by ID directly
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          e.preventDefault();
+          
+          // Get the navbar height to offset the scrolling
+          const navbarHeight = document.querySelector('nav')?.offsetHeight || 0;
+          
+          // Calculate the final position including the navbar offset
+          const scrollPosition = targetElement.offsetTop - navbarHeight;
+          
+          // Perform smooth scrolling
+          window.scrollTo({
+            top: scrollPosition,
+            behavior: 'smooth'
+          });
+          
+          // Update URL without causing a page jump
+          window.history.pushState(null, '', href);
+        }
+      }
+    };
+    
+    document.addEventListener('click', handleAnchorClick);
+    
+    // Handle initial loading with hash in URL
+    if (window.location.hash && window.location.hash.length > 1) {
+      // Get the ID without the '#' prefix
+      const targetId = window.location.hash.substring(1);
+      
+      if (targetId) {
+        // Find the element by ID
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          // Small timeout to ensure page is fully loaded
+          setTimeout(() => {
+            // Get the navbar height to offset the scrolling
+            const navbarHeight = document.querySelector('nav')?.offsetHeight || 0;
+            
+            // Calculate the final position including the navbar offset
+            const scrollPosition = targetElement.offsetTop - navbarHeight +10;
+            
+            // Perform smooth scrolling
+            window.scrollTo({
+              top: scrollPosition,
+              behavior: 'smooth'
+            });
+          }, 100);
+        }
+      }
+    }
+    
+    return () => {
+      document.removeEventListener('click', handleAnchorClick);
+    };
+  }, []);
+
   // Calculate prices based on billing cycle
   const starterPrice = annualBilling ? 99 : Math.round(99 * 1.2);
   const professionalPrice = annualBilling ? 199 : Math.round(199 * 1.2);
